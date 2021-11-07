@@ -123,7 +123,7 @@ RSpec.describe League do
   end
   #coach name in game_teams_dummy, season in games_dummy
   it 'can calculate the most accurate team' do
-    expect(league.most_accurate_team("20122013")).to eq("LA Galaxy")
+    expect(league.most_accurate_team("20122013")).to eq("FC Dallas")
   end
 
   xit 'can calculate the least accurate team' do

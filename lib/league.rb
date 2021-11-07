@@ -109,11 +109,20 @@ class League
     games_by_season = @games.group_by {|game| game.season}
     games_by_season.keep_if {|key, value| key == season}
     games_in_season = games_by_season.map {|season, game| game.map {|game| game.game_id}}.flatten
+    games_in_question_array = @game_teams.select {|game| games_in_season}
+    team_id_array = games_in_question_array.map {|game| game.team_id}
 
-    games_from_game_teams = @game_teams.group_by {|game| game.game_id}
-    goals = games_from_game_teams.map {|season, game| game.map {|game| game.goals.to_f}}.flatten
-    shots = games_from_game_teams.map {|season, game| game.map {|game| game.shots.to_f}}.flatten
-    a = goals.zip(shots).map {|thing| thing.inject(:/).round(2)}
-    require "pry"; binding.pry
+    goals = games_in_question_array.map {|game| game.goals.to_f}
+    shots = games_in_question_array.map {|game| game.shots.to_f}
+    ratios_array = goals.zip(shots).map {|thing| thing.inject(:/).round(2)}
+    ratios_by_team = Hash[team_id_array.zip(ratios_array)]
+    max_ratio = ratios_by_team.index(ratios_by_team.values.max)
+    team_name_from_id(max_ratio)
+  end
+
+  def best_offense
+    highest_scoring_team = combined_hash_team_goals.index(combined_hash_team_goals.values.max)
+    best_team = @teams.find {|team| team.team_id == highest_scoring_team}
+    best_team.team_name
   end
 end
