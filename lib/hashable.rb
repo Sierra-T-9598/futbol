@@ -24,4 +24,9 @@ module Hashable
   def combined_goals_by_team_id
     home_team_goals_by_id.merge(away_teams_goals_by_id){|key, home_value, away_value| home_value + away_value}
   end
+
+  def games_by_season(season)
+    games_by_season = @games.group_by {|game| game.season}
+    games_in_season = games_by_season.keep_if {|key, value| key == season}
+  end 
 end
