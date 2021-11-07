@@ -10,3 +10,4 @@ team_id,franchiseId,teamName,abbreviation,Stadium,link
 18,34,Minnesota United FC,MIN,Allianz Field,/api/v1/teams/18
 19,18,Philadelphia Union,PHI,Talen Energy Stadium,/api/v1/teams/19
 28,29,Los Angeles FC,LFC,Banc of California Stadium,/api/v1/teams/28
+16,11,New England Revolution,NE,Gillette Stadium,/api/v1/teams/16

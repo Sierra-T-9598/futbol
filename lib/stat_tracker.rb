@@ -65,6 +65,14 @@ class StatTracker
     @league.worst_offense
   end
 
+  def most_tackles(season)
+    @league.most_tackles(season)
+  end
+
+  def fewest_tackles(season)
+    @league.fewest_tackles(season)
+  end
+
   def highest_scoring_home_team
     @league.highest_scoring_home_team
   end
