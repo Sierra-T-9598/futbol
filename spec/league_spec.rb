@@ -140,16 +140,15 @@ RSpec.describe League do
 
 
 ###TEAM STATS METHODS
-  xit 'can provide team info' do
-    expected = {"team_id" => 1, "franchise_id" => 23, "team_name" => "Atlanta United", "abbreviation" => "ATL", "link" => "/api/v1/teams/1"}
+  it 'can provide team info' do
+    expected = {"team_id" => "1", "franchise_id" => "23", "team_name" => "Atlanta United", "abbreviation" => "ATL", "link" => "/api/v1/teams/1"}
     expect(league.team_info("1")).to eq(expected)
   end
-  #coach name in game_teams_dummy, season in games_dummy
 
   xit 'can calculate the team with the best season' do
     expect(league.best_season("6")).to eq("20122013")
   end
-  #coach name in game_teams_dummy, season in games_dummy
+
   xit 'can calculate the most accurate team' do
     expect(league.worst_season("24")).to eq("20122013")
   end
