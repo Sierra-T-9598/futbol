@@ -93,11 +93,6 @@ class League
   end
 
   def highest_scoring_visitor
-    away_team_hash = @games.group_by {|game| game.away_team_id}
-    away_team_hash.transform_values! {|value| value.count}
-    combined_average = away_teams_goals_by_id.merge(away_team_hash){|key, goals_value, games_value| goals_value.to_f / games_value.to_f}
-    team_id = combined_average.max[0]
-    return @teams.select {|team| team.team_id == team_id}.map {|team| team.team_name}[0]
     team_id = away_team_goals_per_game_avg.index(away_team_goals_per_game_avg.values.max)
     team_name_from_id(team_id)
   end
