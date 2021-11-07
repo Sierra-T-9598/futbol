@@ -126,4 +126,19 @@ class League
     max_ratio = ratios_by_team.index(ratios_by_team.values.max)
     team_name_from_id(max_ratio)
   end
+
+  def least_accurate_team(season)
+    games_by_season = @games.group_by {|game| game.season}
+    games_by_season.keep_if {|key, value| key == season}
+    games_in_season = games_by_season.map {|season, game| game.map {|game| game.game_id}}.flatten
+    games_in_question_array = @game_teams.select {|game| games_in_season}
+    team_id_array = games_in_question_array.map {|game| game.team_id}
+
+    goals = games_in_question_array.map {|game| game.goals.to_f}
+    shots = games_in_question_array.map {|game| game.shots.to_f}
+    ratios_array = goals.zip(shots).map {|thing| thing.inject(:/).round(2)}
+    ratios_by_team = Hash[team_id_array.zip(ratios_array)]
+    min_ratio = ratios_by_team.index(ratios_by_team.values.min)
+    team_name_from_id(min_ratio)
+  end
 end
