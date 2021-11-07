@@ -72,4 +72,32 @@ class StatTracker
   def fewest_tackles(season)
     @league.fewest_tackles(season)
   end
+
+  def highest_scoring_home_team
+    @league.highest_scoring_home_team
+  end
+
+  def highest_scoring_visitor
+    @league.highest_scoring_visitor
+  end
+
+  def lowest_scoring_visitor
+    @league.lowest_scoring_visitor
+  end
+
+  def lowest_scoring_home_team
+    @league.lowest_scoring_home_team
+  end
+
+  def most_accurate_team(season)
+    @league.most_accurate_team(season)
+  end
+
+  def least_accurate_team(season)
+    @league.least_accurate_team(season)
+  end
+
+  def team_info(team_id)
+    @league.team_info(team_id)
+  end 
 end

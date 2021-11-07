@@ -121,5 +121,48 @@ class League
     lowest_tackling_team_id = team_tackles_totals.index(team_tackles_totals.values.min)
     lowest_tackling_team = @teams.find {|team| team.team_id == lowest_tackling_team_id}
     lowest_tackling_team.team_name
+
+  def most_accurate_team(season)
+    games_by_season = @games.group_by {|game| game.season}
+    games_by_season.keep_if {|key, value| key == season}
+    games_in_season = games_by_season.map {|season, game| game.map {|game| game.game_id}}.flatten
+    games_in_question_array = @game_teams.select {|game| games_in_season}
+    team_id_array = games_in_question_array.map {|game| game.team_id}
+
+    goals = games_in_question_array.map {|game| game.goals.to_f}
+    shots = games_in_question_array.map {|game| game.shots.to_f}
+    ratios_array = goals.zip(shots).map {|thing| thing.inject(:/).round(2)}
+    ratios_by_team = Hash[team_id_array.zip(ratios_array)]
+    max_ratio = ratios_by_team.index(ratios_by_team.values.max)
+    team_name_from_id(max_ratio)
+  end
+
+  def least_accurate_team(season)
+    games_by_season = @games.group_by {|game| game.season}
+    games_by_season.keep_if {|key, value| key == season}
+    games_in_season = games_by_season.map {|season, game| game.map {|game| game.game_id}}.flatten
+    games_in_question_array = @game_teams.select {|game| games_in_season}
+    team_id_array = games_in_question_array.map {|game| game.team_id}
+
+    goals = games_in_question_array.map {|game| game.goals.to_f}
+    shots = games_in_question_array.map {|game| game.shots.to_f}
+    ratios_array = goals.zip(shots).map {|thing| thing.inject(:/).round(2)}
+    ratios_by_team = Hash[team_id_array.zip(ratios_array)]
+    min_ratio = ratios_by_team.index(ratios_by_team.values.min)
+    team_name_from_id(min_ratio)
+  end
+
+  def team_info(team_id)
+    team_keys = ["team_id", "franchise_id", "team_name", "abbreviation", "link"]
+    team_values = []
+    teams_by_team_id = @teams.group_by {|team| team.team_id}
+    team_in_question = teams_by_team_id.keep_if {|key, value| key == team_id}
+    team_values << team_in_question.map {|key, team| team.map {|team| team.team_id}}.flatten
+    team_values << team_in_question.map {|key, team| team.map {|team| team.franchise_id}}.flatten
+    team_values << team_in_question.map {|key, team| team.map {|team| team.team_name}}.flatten
+    team_values << team_in_question.map {|key, team| team.map {|team| team.abbreviation}}.flatten
+    team_values << team_in_question.map {|key, team| team.map {|team| team.link}}.flatten
+    team_values_array = team_values.flatten
+    team_info_hash = Hash[team_keys.zip(team_values_array)]
   end
 end

@@ -42,7 +42,7 @@ RSpec.describe League do
   end
   #game_teams_dummy
   it 'can find the percentage of games won by an away team' do
-    expect(league.percentage_away_wins).to eq(0.22)
+    expect(league.percentage_visitor_wins).to eq(0.22)
   end
   #game_teams_dummy
 
@@ -112,8 +112,8 @@ RSpec.describe League do
 
   ###SEASON STATS METHODS
   xit 'can calculate the coach with the best win percentage' do
-    expect(@stat_tracker.winningest_coach("20122013")).to eq "Claude Julien"
-    expect(@stat_tracker.winningest_coach("20132014")).to eq "Claude Julien"
+    expect(league.winningest_coach("20122013")).to eq "Claude Julien"
+    expect(league.winningest_coach("20132014")).to eq "Claude Julien"
   end
   #coach name in game_teams_dummy, season in games_dummy
 
@@ -122,12 +122,12 @@ RSpec.describe League do
     expect(league.worst_coach("20132014")).to eq("John Tortorella")
   end
   #coach name in game_teams_dummy, season in games_dummy
-  xit 'can calculate the most accurate team' do
-    expect(league.most_accurate_team("20122013")).to eq("LA Galaxy")
+  it 'can calculate the most accurate team' do
+    expect(league.most_accurate_team("20122013")).to eq("FC Dallas")
   end
 
-  xit 'can calculate the least accurate team' do
-    expect(league.least_accurate_team("20122013")).to eq("Seattle Sounders")
+  it 'can calculate the least accurate team' do
+    expect(league.least_accurate_team("20122013")).to eq("Philadelphia Union")
   end
 
   it 'can calculate the most tackles' do
@@ -140,18 +140,13 @@ RSpec.describe League do
 
 
 ###TEAM STATS METHODS
-  xit 'can provide team info' do
-    expected = {"team_id" => 1, "franchise_id" => 23, "team_name" => "Atlanta United", "abbreviation" => "ATL", "link" => "/api/v1/teams/1"}
+  it 'can provide team info' do
+    expected = {"team_id" => "1", "franchise_id" => "23", "team_name" => "Atlanta United", "abbreviation" => "ATL", "link" => "/api/v1/teams/1"}
     expect(league.team_info("1")).to eq(expected)
   end
-  #coach name in game_teams_dummy, season in games_dummy
 
   xit 'can calculate the team with the best season' do
     expect(league.best_season("6")).to eq("20122013")
-  end
-  #coach name in game_teams_dummy, season in games_dummy
-  xit 'can calculate the most accurate team' do
-    expect(league.worst_season("24")).to eq("20122013")
   end
 
   xit 'can calculate the average win percentage' do
