@@ -87,7 +87,7 @@ RSpec.describe League do
   #games_dummy and teams_dummy
 
   it 'can calculate worst offense' do
-    expect(league.worst_offense).to eq("Sporting Kansas City")
+    expect(league.worst_offense).to eq("Houston Dynamo")
   end
   #games_dummy and teams_dummy
 
@@ -102,11 +102,11 @@ RSpec.describe League do
   #games_dummy and teams_dummy
 
   it 'can calculate lowest scoring visitor' do
-    expect(league.lowest_scoring_visitor).to eq("Sporting Kansas City")
+    expect(league.lowest_scoring_visitor).to eq("Houston Dynamo")
   end
   #games_dummy and teams_dummy
   it 'can calculate lowest scoring home team' do
-    expect(league.lowest_scoring_home_team).to eq("Sporting Kansas City")
+    expect(league.lowest_scoring_home_team).to eq("Houston Dynamo")
   end
   #games_dummy and teams_dummy
 

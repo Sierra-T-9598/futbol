@@ -51,7 +51,7 @@ class League
 
   def percentage_ties
     tie_games = @game_teams.select {|game| game.result == "TIE"}
-    ((tie_games.count / 2.0) / (@game_teams.count / 2.0)).round(2)
+    ((tie_games.uniq.count / 2.0) / (@game_teams.count / 2.0)).round(2)
   end
 
   def count_of_games_by_season
@@ -76,15 +76,13 @@ class League
   end
 
   def best_offense
-    highest_scoring_team = averaging_hash.index(averaging_hash.values.max)
-    best_team = @teams.find {|team| team.team_id == highest_scoring_team}
-    best_team.team_name
+    team_id = averaging_hash.index(averaging_hash.values.max)
+    team_name_from_id(team_id)
   end
 
   def worst_offense
-    lowest_scoring_team = averaging_hash.index(averaging_hash.values.min)
-    worst_team = @teams.find {|team| team.team_id == lowest_scoring_team}
-    worst_team.team_name
+    team_id = averaging_hash.index(averaging_hash.values.min)
+    team_name_from_id(team_id)
   end
 
   def highest_scoring_home_team
@@ -164,5 +162,11 @@ class League
     team_values << team_in_question.map {|key, team| team.map {|team| team.link}}.flatten
     team_values_array = team_values.flatten
     team_info_hash = Hash[team_keys.zip(team_values_array)]
+  end
+
+  def most_tackles(season)
+    team_tackles_totals = game_stats_by_team_id(season).transform_values{|values| values.map{|game_team| game_team.tackles.to_i}.inject(:+)}
+    team_id = team_tackles_totals.index(team_tackles_totals.values.max)
+    team_name_from_id(team_id)
   end
 end
