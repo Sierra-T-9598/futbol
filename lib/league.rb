@@ -3,7 +3,7 @@ require_relative './team'
 require_relative './game_team'
 require_relative './stat_tracker.rb'
 require_relative './summable'
-require_relative './league_stats_module.rb'
+require_relative './hashable'
 class League
   include Summable
   include Hashable
@@ -102,7 +102,18 @@ class League
     away_team_hash.transform_values! {|value| value.count}
     combined_average = away_teams_goals_by_id.merge(away_team_hash){|key, goals_value, games_value| goals_value.to_f / games_value.to_f}
     team_id = combined_average.max[0]
-    require "pry"; binding.pry
     return @teams.select {|team| team.team_id == team_id}.map {|team| team.team_name}[0]
+  end
+
+  def most_accurate_team(season)
+    games_by_season = @games.group_by {|game| game.season}
+    games_by_season.keep_if {|key, value| key == season}
+    games_in_season = games_by_season.map {|season, game| game.map {|game| game.game_id}}.flatten
+
+    games_from_game_teams = @game_teams.group_by {|game| game.game_id}
+    goals = games_from_game_teams.map {|season, game| game.map {|game| game.goals.to_f}}.flatten
+    shots = games_from_game_teams.map {|season, game| game.map {|game| game.shots.to_f}}.flatten
+    a = goals.zip(shots).map {|thing| thing.inject(:/).round(2)}
+    require "pry"; binding.pry
   end
 end
