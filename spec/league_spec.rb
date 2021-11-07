@@ -134,8 +134,8 @@ RSpec.describe League do
     expect(league.most_tackles("20122013")).to eq("FC Dallas")
   end
 
-  xit 'can calculate the fewest tackles' do
-    expect(league.fewest_tackles("20122013")).to eq("Houston Dynamo")
+  it 'can calculate the fewest tackles' do
+    expect(league.fewest_tackles("20122013")).to eq("LA Galaxy")
   end
 
 
@@ -147,10 +147,6 @@ RSpec.describe League do
 
   xit 'can calculate the team with the best season' do
     expect(league.best_season("6")).to eq("20122013")
-  end
-
-  xit 'can calculate the most accurate team' do
-    expect(league.worst_season("24")).to eq("20122013")
   end
 
   xit 'can calculate the average win percentage' do

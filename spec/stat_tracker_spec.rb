@@ -19,38 +19,38 @@ RSpec.describe StatTracker do
 
 
 
-  xit 'exists' do
+  it 'exists' do
     expect(@stat_tracker).to be_instance_of(StatTracker)
   end
 
   ##Game Statistics Methods
 
-  xit 'can display the highest total score' do
+  it 'can display the highest total score' do
     #game_teams_dummy
     expect(@stat_tracker.highest_total_score).to eq(5)
   end
 
-  xit 'it can display lowest total score' do
+  it 'it can display lowest total score' do
     #game_teams_dummy
     expect(@stat_tracker.lowest_total_score).to eq(1)
   end
 
-  xit 'it can display total wins by home team as percentage' do
+  it 'it can display total wins by home team as percentage' do
     #game_teams_dummy
-    expect(@stat_tracker.percentage_home_wins).to eq(0.50)
+    expect(@stat_tracker.percentage_home_wins).to eq(0.44)
   end
 
-  xit 'can find the percentage of games that a visitor has won' do
+  it 'can find the percentage of games that a visitor has won' do
     #game_teams_dummy
-    expect(@stat_tracker.percentage_visitor_wins).to eq(0.17)
+    expect(@stat_tracker.percentage_visitor_wins).to eq(0.22)
   end
 
-  xit 'can find the percentage of games that resulted in a tie' do
+  it 'can find the percentage of games that resulted in a tie' do
     #game_teams_dummy
     expect(@stat_tracker.percentage_ties).to eq(0.33)
   end
 
-  xit 'can sort the number of games attributed to each season' do
+  it 'can sort the number of games attributed to each season' do
     #games_dummy
     expected = {
       "20122013" => 6,
@@ -60,12 +60,12 @@ RSpec.describe StatTracker do
     expect(@stat_tracker.count_of_games_by_season).to eq(expected)
   end
 
-  xit 'can calculate average goals per game across seasons' do
+  it 'can calculate average goals per game across seasons' do
     #games_dummy
     expect(@stat_tracker.average_goals_per_game).to eq(3.56)
   end
 
-  xit 'can organize average goals per game by season' do
+  it 'can organize average goals per game by season' do
     #games_dummy
     expected = {
       "20122013" => 3.33,
@@ -75,41 +75,41 @@ RSpec.describe StatTracker do
   end
   ##League Stats Methods
 
-  xit 'count the total number of teams' do
+  it 'count the total number of teams' do
     #teams_dummy
-    expect(@stat_tracker.count_of_teams).to eq(10)
+    expect(@stat_tracker.count_of_teams).to eq(11)
   end
 
-  xit 'can calculate the best offense' do
+  it 'can calculate the best offense' do
     #games_dummy & #teams_dummy
     # Name of the team with the highest average
     # number of goals scored per game across all seasons.
     expect(@stat_tracker.best_offense).to eq("FC Dallas")
   end
 
-  xit 'can calculate the worst offense' do
+  it 'can calculate the worst offense' do
     #games_dummy & #teams_dummy
     # Name of the team with the worst average
     # number of goals scored per game across all seasons.
     expect(@stat_tracker.worst_offense).to eq("Sporting Kansas City")
   end
 
-  xit 'can calculate the highest scoring visitor' do
+  it 'can calculate the highest scoring visitor' do
       #games_dummy & #teams_dummy
     expect(@stat_tracker.highest_scoring_visitor).to eq("FC Dallas")
   end
 
-  xit 'can calculate the highest scoring home_team' do
+  it 'can calculate the highest scoring home_team' do
     #games_dummy & #teams_dummy
     expect(@stat_tracker.highest_scoring_home_team).to eq("Sky Blue FC")
   end
 
-  xit 'can calculate the lowewst scoring visitor' do
+  it 'can calculate the lowewst scoring visitor' do
     #games_dummy & #teams_dummy
     expect(@stat_tracker.lowest_scoring_visitor).to eq("Sporting Kansas City")
   end
 
-  xit 'can calculate the lowest scoring home team' do
+  it 'can calculate the lowest scoring home team' do
     #games_dummy & #teams_dummy
     expect(@stat_tracker.lowest_scoring_home_team).to eq("Sporting Kansas City")
   end
@@ -128,14 +128,14 @@ RSpec.describe StatTracker do
     expect(@stat_tracker.worst_coach("20122013")).to eq("John Tortorella")
   end
 
-  xit 'can calculate the most accurate team' do
+  it 'can calculate the most accurate team' do
 
-    expect(@stat_tracker.most_accurate_team("20122013")).to eq("LA Galaxy")
+    expect(@stat_tracker.most_accurate_team("20122013")).to eq("FC Dallas")
   end
 
-  xit 'can calculate the least accurate team'do
+  it 'can calculate the least accurate team'do
 
-    expect(@stat_tracker.least_accurate_team("20122013")).to eq("Seatle Sounders")
+    expect(@stat_tracker.least_accurate_team("20122013")).to eq("Philadelphia Union")
   end
 
   xit 'can find the team with the most tackles' do
@@ -149,7 +149,7 @@ RSpec.describe StatTracker do
   end
 
   ## TEAM Statistics
-  xit 'can provide team info' do
+  it 'can provide team info' do
     expected = {
       "team_id" => "1",
       "franchise_id" => "23",
