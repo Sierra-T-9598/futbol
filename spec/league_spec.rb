@@ -42,7 +42,7 @@ RSpec.describe League do
   end
   #game_teams_dummy
   it 'can find the percentage of games won by an away team' do
-    expect(league.percentage_away_wins).to eq(0.22)
+    expect(league.percentage_visitor_wins).to eq(0.22)
   end
   #game_teams_dummy
 
@@ -77,7 +77,7 @@ RSpec.describe League do
   ###LEAGUE STATS
 
   it 'can count total number of teams' do
-    expect(league.count_of_teams).to eq(10)
+    expect(league.count_of_teams).to eq(11)
   end
   #teams_dummy
 
@@ -96,7 +96,7 @@ RSpec.describe League do
   end
   #games_dummy and teams_dummy
 
-  xit 'can calculate highest scoring home team' do
+  it 'can calculate highest scoring home team' do
     expect(league.highest_scoring_home_team).to eq("Sky Blue FC")
   end
   #games_dummy and teams_dummy
@@ -112,8 +112,8 @@ RSpec.describe League do
 
   ###SEASON STATS METHODS
   xit 'can calculate the coach with the best win percentage' do
-    expect(@stat_tracker.winningest_coach("20122013")).to eq "Claude Julien"
-    expect(@stat_tracker.winningest_coach("20132014")).to eq "Claude Julien"
+    expect(league.winningest_coach("20122013")).to eq "Claude Julien"
+    expect(league.winningest_coach("20132014")).to eq "Claude Julien"
   end
   #coach name in game_teams_dummy, season in games_dummy
 
@@ -126,8 +126,8 @@ RSpec.describe League do
     expect(league.most_accurate_team("20122013")).to eq("FC Dallas")
   end
 
-  xit 'can calculate the least accurate team' do
-    expect(league.least_accurate_team("20122013")).to eq("Seattle Sounders")
+  it 'can calculate the least accurate team' do
+    expect(league.least_accurate_team("20122013")).to eq("Philadelphia Union")
   end
 
   xit 'can calculate the most tackles' do
