@@ -96,7 +96,7 @@ RSpec.describe League do
   end
   #games_dummy and teams_dummy
 
-  it 'can calculate highest scoring home team' do
+  xit 'can calculate highest scoring home team' do
     expect(league.highest_scoring_home_team).to eq("Sky Blue FC")
   end
   #games_dummy and teams_dummy
@@ -122,8 +122,8 @@ RSpec.describe League do
     expect(league.worst_coach("20132014")).to eq("John Tortorella")
   end
   #coach name in game_teams_dummy, season in games_dummy
-  xit 'can calculate the most accurate team' do
-    expect(league.most_accurate_team("20122013")).to eq("LA Galaxy")
+  it 'can calculate the most accurate team' do
+    expect(league.most_accurate_team("20122013")).to eq("FC Dallas")
   end
 
   xit 'can calculate the least accurate team' do
