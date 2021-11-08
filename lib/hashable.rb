@@ -23,7 +23,7 @@ module Hashable
     home_count_hash.merge(away_count_hash){|key, home_value, away_value| home_value + away_value}
   end
 
-  def game_stats_by_id_season(season)
+  def games_played_in_season(season)
     games_by_season = @games.group_by {|game| game.season}
     games_in_season = games_by_season.keep_if {|key, value| key == season}
     season_game_ids = games_in_season.map {|season, games| games.map {|game| game.game_id}}.flatten
@@ -31,7 +31,7 @@ module Hashable
   end
 
   def game_stats_by_team_id(season)
-    game_stats_by_id_season(season).group_by{|game_team| game_team.team_id}
+    games_played_in_season(season).group_by{|game_team| game_team.team_id}
   end
 
   def away_teams_goals_by_id
