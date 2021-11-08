@@ -123,7 +123,6 @@ class League
     coach_name = combined_average.key(combined_average.values.min)
   end
 
-
   def most_accurate_team(season)
     games_by_season = @games.group_by {|game| game.season}
     games_by_season.keep_if {|key, value| key == season}
@@ -178,5 +177,23 @@ class League
     team_tackles_totals = game_stats_by_team_id(season).transform_values{|values| values.map{|game_team| game_team.tackles.to_i}.inject(:+)}
     team_id = team_tackles_totals.key(team_tackles_totals.values.min)
     team_name_from_id(team_id)
+  end
+
+  def fewest_tackles(season)
+    team_tackles_totals = game_stats_by_team_id(season).transform_values{|values| values.map{|game_team| game_team.tackles.to_i}.inject(:+)}
+    team_id = team_tackles_totals.index(team_tackles_totals.values.min)
+    team_name_from_id(team_id)
+  end
+
+  def most_goals_scored(team)
+    team_games = @game_teams.select{|game_team| game_team.team_id == team}
+    goals = team_games.map{|game_team| game_team.goals.to_i}
+    goals.max
+  end
+
+  def fewest_goals_scored(team)
+    team_games = @game_teams.select{|game_team| game_team.team_id == team}
+    goals = team_games.map{|game_team| game_team.goals.to_i}
+    goals.min
   end
 end
