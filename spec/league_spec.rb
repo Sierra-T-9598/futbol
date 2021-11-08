@@ -117,17 +117,17 @@ RSpec.describe League do
   end
   #coach name in game_teams_dummy, season in games_dummy
 
-  xit 'can calculate coach with the worst win percentage' do
+  it 'can calculate coach with the worst win percentage' do
     expect(league.worst_coach("20122013")).to eq("John Tortorella")
     expect(league.worst_coach("20132014")).to eq("John Tortorella")
   end
   #coach name in game_teams_dummy, season in games_dummy
   it 'can calculate the most accurate team' do
-    expect(league.most_accurate_team("20122013")).to eq("FC Dallas")
+    expect(league.most_accurate_team("20122013")).to eq("LA Galaxy")
   end
 
   it 'can calculate the least accurate team' do
-    expect(league.least_accurate_team("20122013")).to eq("Philadelphia Union")
+    expect(league.least_accurate_team("20122013")).to eq("Seattle Sounders FC")
   end
 
   it 'can calculate the most tackles' do

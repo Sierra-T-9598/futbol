@@ -130,12 +130,12 @@ RSpec.describe StatTracker do
 
   it 'can calculate the most accurate team' do
 
-    expect(@stat_tracker.most_accurate_team("20122013")).to eq("FC Dallas")
+    expect(@stat_tracker.most_accurate_team("20122013")).to eq("LA Galaxy")
   end
 
   it 'can calculate the least accurate team'do
 
-    expect(@stat_tracker.least_accurate_team("20122013")).to eq("Philadelphia Union")
+    expect(@stat_tracker.least_accurate_team("20122013")).to eq("Seattle Sounders FC")
   end
 
   xit 'can find the team with the most tackles' do
