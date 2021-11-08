@@ -77,7 +77,7 @@ RSpec.describe StatTracker do
 
   it 'count the total number of teams' do
     #teams_dummy
-    expect(@stat_tracker.count_of_teams).to eq(11)
+    expect(@stat_tracker.count_of_teams).to eq(12)
   end
 
   it 'can calculate the best offense' do
@@ -91,7 +91,7 @@ RSpec.describe StatTracker do
     #games_dummy & #teams_dummy
     # Name of the team with the worst average
     # number of goals scored per game across all seasons.
-    expect(@stat_tracker.worst_offense).to eq("Sporting Kansas City")
+    expect(@stat_tracker.worst_offense).to eq("Houston Dynamo")
   end
 
   it 'can calculate the highest scoring visitor' do
@@ -106,23 +106,23 @@ RSpec.describe StatTracker do
 
   it 'can calculate the lowewst scoring visitor' do
     #games_dummy & #teams_dummy
-    expect(@stat_tracker.lowest_scoring_visitor).to eq("Sporting Kansas City")
+    expect(@stat_tracker.lowest_scoring_visitor).to eq("Houston Dynamo")
   end
 
   it 'can calculate the lowest scoring home team' do
     #games_dummy & #teams_dummy
-    expect(@stat_tracker.lowest_scoring_home_team).to eq("Sporting Kansas City")
+    expect(@stat_tracker.lowest_scoring_home_team).to eq("Houston Dynamo")
   end
 
   ##Season Statistics
 
-  xit 'can name the coach with the best win percentage' do
+  it 'can name the coach with the best win percentage' do
     #coach in games_teams_dummy, season in games_dummy
     expect(@stat_tracker.winningest_coach("20122013")).to eq("Claude Julien")
     expect(@stat_tracker.winningest_coach("20132014")).to eq("Claude Julien")
   end
 
-  xit 'can name the coach with the worst win percentage' do
+  it 'can name the coach with the worst win percentage' do
     #coach in games_teams_dummy, season in games_dummy
     expect(@stat_tracker.worst_coach("20132014")).to eq("John Tortorella")
     expect(@stat_tracker.worst_coach("20122013")).to eq("John Tortorella")
@@ -138,14 +138,14 @@ RSpec.describe StatTracker do
     expect(@stat_tracker.least_accurate_team("20122013")).to eq("Seattle Sounders FC")
   end
 
-  xit 'can find the team with the most tackles' do
+  it 'can find the team with the most tackles' do
 
     expect(@stat_tracker.most_tackles("20122013")).to eq("FC Dallas")
   end
 
-  xit 'can find the team with the least tackles' do
+  it 'can find the team with the least tackles' do
 
-    expect(@stat_tracker.fewest_tackles("20122013")).to eq("Houston Dynamo")
+    expect(@stat_tracker.fewest_tackles("20122013")).to eq("LA Galaxy")
   end
 
   ## TEAM Statistics
@@ -176,12 +176,12 @@ RSpec.describe StatTracker do
     expect(@stat_tracker.average_win_percentage("6")).to eq(0.75)
   end
 
-  xit 'can report the highest goals in a single game' do
+  it 'can report the highest goals in a single game' do
 
     expect(@stat_tracker.most_goals_scored("6")). to eq(3)
   end
 
-  xit 'can report the fewest goals scored in a game' do
+  it 'can report the fewest goals scored in a game' do
 
     expect(@stat_tracker.fewest_goals_scored("19")). to eq(0)
   end

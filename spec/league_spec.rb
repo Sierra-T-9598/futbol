@@ -149,6 +149,10 @@ RSpec.describe League do
     expect(league.best_season("6")).to eq("20122013")
   end
 
+  xit 'can calculate the team with the worst season' do
+    expect(league.worst_season("3")).to eq("20122013")
+  end
+
   xit 'can calculate the average win percentage' do
     expect(league.average_win_percentage("6")).to eq(0.75)
   end
