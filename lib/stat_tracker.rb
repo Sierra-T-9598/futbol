@@ -89,6 +89,14 @@ class StatTracker
     @league.lowest_scoring_home_team
   end
 
+  def winningest_coach(season)
+    @league.winningest_coach(season)
+  end
+
+  def worst_coach(season)
+    @league.worst_coach(season)
+  end
+
   def most_accurate_team(season)
     @league.most_accurate_team(season)
   end
