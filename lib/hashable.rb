@@ -62,11 +62,16 @@ module Hashable
     @teams.select {|team| team.team_id == team_id}.map {|team| team.team_name}[0]
   end
 
+  def season_from_game_id(game_id)
+    game_id_games = @games.select {|game| game.game_id == game_id}
+    game_id_games.map {|game| game.season}
+  end
+
   def combined_games_by_team_id
     home_hash = @games.group_by {|game| game.home_team_id}
     away_hash = @games.group_by {|game| game.away_team_id}
     combined = home_hash.merge(away_hash){|team, home, away| home + away}
-  end 
+  end
 
   def combined_goals_by_team_id
     home_team_goals_by_id.merge(away_teams_goals_by_id){|key, home_value, away_value| home_value + away_value}

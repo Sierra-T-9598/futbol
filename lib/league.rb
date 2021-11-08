@@ -199,4 +199,22 @@ class League
     goals = team_games.map{|game_team| game_team.goals.to_i}
     goals.min
   end
+
+  def best_season(team)
+    game_teams_team = @game_teams.select{|game_team| game_team.team_id == team}
+    team_wins = game_teams_team.find_all{|game_team| game_team.result == "WIN"}
+    winning_game_ids = team_wins.map{|game_team| game_team.game_id}
+    winning_season_arrays = winning_game_ids.map{|id| season_from_game_id(id)}.flatten
+    sorted_by_season = winning_season_arrays.group_by{|season| season}
+    sorted_by_season.values.max_by{|array| array.length}[0]
+  end
+
+  def worst_season(team)
+    game_teams_team = @game_teams.select{|game_team| game_team.team_id == team}
+    team_wins = game_teams_team.find_all{|game_team| game_team.result == "WIN"}
+    losing_game_ids = team_wins.map{|game_team| game_team.game_id}
+    losing_season_arrays = losing_game_ids.map{|id| season_from_game_id(id)}.flatten
+    sorted_by_season = losing_season_arrays.group_by{|season| season}
+    sorted_by_season.values.min_by{|array| array.length}[0]
+  end
 end

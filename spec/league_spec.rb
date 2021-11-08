@@ -145,11 +145,11 @@ RSpec.describe League do
     expect(league.team_info("1")).to eq(expected)
   end
 
-  xit 'can calculate the team with the best season' do
-    expect(league.best_season("6")).to eq("20122013")
+  it 'can calculate the team with the best season' do
+    expect(league.best_season("17")).to eq("20122013")
   end
 
-  xit 'can calculate the team with the worst season' do
+  it 'can calculate the team with the worst season' do
     expect(league.worst_season("3")).to eq("20122013")
   end
 
