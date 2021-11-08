@@ -116,4 +116,12 @@ class StatTracker
   def fewest_goals_scored(team)
     @league.fewest_goals_scored(team)
   end
+
+  def best_season(team)
+    @league.best_season(team)
+  end
+
+  def worst_season(team)
+    @league.worst_season(team)
+  end
 end
