@@ -77,7 +77,7 @@ RSpec.describe League do
   ###LEAGUE STATS
 
   it 'can count total number of teams' do
-    expect(league.count_of_teams).to eq(11)
+    expect(league.count_of_teams).to eq(12)
   end
   #teams_dummy
 
@@ -153,11 +153,11 @@ RSpec.describe League do
     expect(league.average_win_percentage("6")).to eq(0.75)
   end
 
-  xit 'can report most goals scored' do
+  it 'can report most goals scored' do
     expect(league.most_goals_scored("6")).to eq(3)
   end
 
-  xit 'can report fewest goals scored' do
+  it 'can report fewest goals scored' do
     expect(league.fewest_goals_scored("19")).to eq(0)
   end
 

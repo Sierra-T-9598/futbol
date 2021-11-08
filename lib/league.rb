@@ -39,7 +39,7 @@ class League
     ((home_game_wins.length.to_f)/(home_games.length.to_f)).round(2)
   end
 
-  def percentage_away_wins
+  def percentage_visitor_wins
     away_games = @game_teams.find_all do |game_team|
       game_team.home_or_away["away"]
     end
@@ -105,21 +105,6 @@ class League
     team_name_from_id(team_id)
   end
 
-  def most_tackles(season)
-    game_teams_by_team = game_teams_by_season(season).group_by{|game_team| game_team.team_id}
-    team_tackles_totals = game_teams_by_team.transform_values{|values| values.map{|game_team| game_team.tackles.to_i}.inject(:+)}
-    highest_tackling_team_id = team_tackles_totals.index(team_tackles_totals.values.max)
-    highest_tackling_team = @teams.find {|team| team.team_id == highest_tackling_team_id}
-    highest_tackling_team.team_name
-  end
-
-  def fewest_tackles(season)
-    game_teams_by_team = game_teams_by_season(season).group_by{|game_team| game_team.team_id}
-    team_tackles_totals = game_teams_by_team.transform_values{|values| values.map{|game_team| game_team.tackles.to_i}.inject(:+)}
-    lowest_tackling_team_id = team_tackles_totals.index(team_tackles_totals.values.min)
-    lowest_tackling_team = @teams.find {|team| team.team_id == lowest_tackling_team_id}
-    lowest_tackling_team.team_name
-
   def most_accurate_team(season)
     games_by_season = @games.group_by {|game| game.season}
     games_by_season.keep_if {|key, value| key == season}
@@ -168,5 +153,23 @@ class League
     team_tackles_totals = game_stats_by_team_id(season).transform_values{|values| values.map{|game_team| game_team.tackles.to_i}.inject(:+)}
     team_id = team_tackles_totals.index(team_tackles_totals.values.max)
     team_name_from_id(team_id)
+  end
+
+  def fewest_tackles(season)
+    team_tackles_totals = game_stats_by_team_id(season).transform_values{|values| values.map{|game_team| game_team.tackles.to_i}.inject(:+)}
+    team_id = team_tackles_totals.index(team_tackles_totals.values.min)
+    team_name_from_id(team_id)
+  end
+
+  def most_goals_scored(team)
+    team_games = @game_teams.select{|game_team| game_team.team_id == team}
+    goals = team_games.map{|game_team| game_team.goals.to_i}
+    goals.max
+  end
+
+  def fewest_goals_scored(team)
+    team_games = @game_teams.select{|game_team| game_team.team_id == team}
+    goals = team_games.map{|game_team| game_team.goals.to_i}
+    goals.min
   end
 end
