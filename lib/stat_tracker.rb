@@ -99,5 +99,13 @@ class StatTracker
 
   def team_info(team_id)
     @league.team_info(team_id)
-  end 
+  end
+
+  def most_goals_scored(team)
+    @league.most_goals_scored(team)
+  end
+
+  def fewest_goals_scored(team)
+    @league.fewest_goals_scored(team)
+  end
 end

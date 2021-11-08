@@ -33,7 +33,7 @@ module Hashable
   def game_stats_by_team_id(season)
     game_stats_by_id_season(season).group_by{|game_team| game_team.team_id}
   end
-  
+
   def away_teams_goals_by_id
     away_team_hash = @games.group_by {|game| game.away_team_id}
     away_added_goals = away_team_hash.map {|id, games| games.map {|game| game.away_goals.to_i}.inject(:+)}
@@ -61,6 +61,12 @@ module Hashable
   def team_name_from_id(team_id)
     @teams.select {|team| team.team_id == team_id}.map {|team| team.team_name}[0]
   end
+
+  def combined_games_by_team_id
+    home_hash = @games.group_by {|game| game.home_team_id}
+    away_hash = @games.group_by {|game| game.away_team_id}
+    combined = home_hash.merge(away_hash){|team, home, away| home + away}
+  end 
 
   def combined_goals_by_team_id
     home_team_goals_by_id.merge(away_teams_goals_by_id){|key, home_value, away_value| home_value + away_value}
