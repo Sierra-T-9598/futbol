@@ -4,9 +4,12 @@ require_relative './game_team'
 require_relative './stat_tracker.rb'
 require_relative './summable'
 require_relative './hashable'
+require_relative './averageable'
+
 class League
   include Summable
   include Hashable
+  include Averageable
   attr_reader :games,
               :teams,
               :game_teams
@@ -156,7 +159,19 @@ class League
     # require "pry"; binding.pry
   end
 
-  def team_info(team_id)
+  def most_tackles(season)
+    team_tackles_totals = game_stats_by_team_id(season).transform_values{|values| values.map{|game_team| game_team.tackles.to_i}.inject(:+)}
+    team_id = team_tackles_totals.key(team_tackles_totals.values.max)
+    team_name_from_id(team_id)
+  end
+
+  def fewest_tackles(season)
+    team_tackles_totals = game_stats_by_team_id(season).transform_values{|values| values.map{|game_team| game_team.tackles.to_i}.inject(:+)}
+    team_id = team_tackles_totals.index(team_tackles_totals.values.min)
+    team_name_from_id(team_id)
+  end
+  
+   def team_info(team_id)
     team_keys = ["team_id", "franchise_id", "team_name", "abbreviation", "link"]
     team_values = []
     teams_by_team_id = @teams.group_by {|team| team.team_id}
@@ -168,36 +183,6 @@ class League
     team_values << team_in_question.map {|key, team| team.map {|team| team.link}}.flatten
     team_values_array = team_values.flatten
     team_info_hash = Hash[team_keys.zip(team_values_array)]
-  end
-
-  def most_tackles(season)
-    team_tackles_totals = game_stats_by_team_id(season).transform_values{|values| values.map{|game_team| game_team.tackles.to_i}.inject(:+)}
-    team_id = team_tackles_totals.key(team_tackles_totals.values.max)
-    team_name_from_id(team_id)
-  end
-
-  def fewest_tackles(season)
-    team_tackles_totals = game_stats_by_team_id(season).transform_values{|values| values.map{|game_team| game_team.tackles.to_i}.inject(:+)}
-    team_id = team_tackles_totals.key(team_tackles_totals.values.min)
-    team_name_from_id(team_id)
-  end
-
-  def fewest_tackles(season)
-    team_tackles_totals = game_stats_by_team_id(season).transform_values{|values| values.map{|game_team| game_team.tackles.to_i}.inject(:+)}
-    team_id = team_tackles_totals.index(team_tackles_totals.values.min)
-    team_name_from_id(team_id)
-  end
-
-  def most_goals_scored(team)
-    team_games = @game_teams.select{|game_team| game_team.team_id == team}
-    goals = team_games.map{|game_team| game_team.goals.to_i}
-    goals.max
-  end
-
-  def fewest_goals_scored(team)
-    team_games = @game_teams.select{|game_team| game_team.team_id == team}
-    goals = team_games.map{|game_team| game_team.goals.to_i}
-    goals.min
   end
 
   def best_season(team)
@@ -216,5 +201,23 @@ class League
     losing_season_arrays = losing_game_ids.map{|id| season_from_game_id(id)}.flatten
     sorted_by_season = losing_season_arrays.group_by{|season| season}
     sorted_by_season.values.min_by{|array| array.length}[0]
+  end
+  
+  def average_win_percentage(team)
+    total_games = @game_teams.select {|game_team| game_team.team_id == team}
+    total_wins = total_games.select {|game| game.result["WIN"]}
+    average(total_wins.count, total_games.count)
+  end
+    
+  def most_goals_scored(team)
+    team_games = @game_teams.select{|game_team| game_team.team_id == team}
+    goals = team_games.map{|game_team| game_team.goals.to_i}
+    goals.max
+  end
+
+  def fewest_goals_scored(team)
+    team_games = @game_teams.select{|game_team| game_team.team_id == team}
+    goals = team_games.map{|game_team| game_team.goals.to_i}
+    goals.min
   end
 end
