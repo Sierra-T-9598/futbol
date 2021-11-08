@@ -39,7 +39,7 @@ class League
     ((home_game_wins.length.to_f)/(home_games.length.to_f)).round(2)
   end
 
-  def percentage_away_wins
+  def percentage_visitor_wins
     away_games = @game_teams.find_all do |game_team|
       game_team.home_or_away["away"]
     end
@@ -76,49 +76,53 @@ class League
   end
 
   def best_offense
-    team_id = averaging_hash.index(averaging_hash.values.max)
+    team_id = averaging_hash.key(averaging_hash.values.max)
     team_name_from_id(team_id)
   end
 
   def worst_offense
-    team_id = averaging_hash.index(averaging_hash.values.min)
+    team_id = averaging_hash.key(averaging_hash.values.min)
     team_name_from_id(team_id)
   end
 
   def highest_scoring_home_team
-    team_id = home_team_goals_per_game_avg.index(home_team_goals_per_game_avg.values.max)
+    team_id = home_team_goals_per_game_avg.key(home_team_goals_per_game_avg.values.max)
     team_name_from_id(team_id)
   end
 
   def highest_scoring_visitor
-    team_id = away_team_goals_per_game_avg.index(away_team_goals_per_game_avg.values.max)
+    team_id = away_team_goals_per_game_avg.key(away_team_goals_per_game_avg.values.max)
     team_name_from_id(team_id)
   end
 
   def lowest_scoring_visitor
-    team_id = away_team_goals_per_game_avg.index(away_team_goals_per_game_avg.values.min)
+    team_id = away_team_goals_per_game_avg.key(away_team_goals_per_game_avg.values.min)
     team_name_from_id(team_id)
   end
 
   def lowest_scoring_home_team
-    team_id = home_team_goals_per_game_avg.index(home_team_goals_per_game_avg.values.min)
+    team_id = home_team_goals_per_game_avg.key(home_team_goals_per_game_avg.values.min)
     team_name_from_id(team_id)
   end
 
-  def most_tackles(season)
-    game_teams_by_team = game_teams_by_season(season).group_by{|game_team| game_team.team_id}
-    team_tackles_totals = game_teams_by_team.transform_values{|values| values.map{|game_team| game_team.tackles.to_i}.inject(:+)}
-    highest_tackling_team_id = team_tackles_totals.index(team_tackles_totals.values.max)
-    highest_tackling_team = @teams.find {|team| team.team_id == highest_tackling_team_id}
-    highest_tackling_team.team_name
+  def winningest_coach(season)
+    games_played_in_season(season)
+    games_played_by_coach = games_played_in_season(season).group_by {|game| game.head_coach}
+    number_of_games_coached = games_played_by_coach.transform_values {|value| value.count}
+    games_won = games_played_by_coach.transform_values {|value| value.select {|game| game.result == "WIN"}}.transform_values {|value| value.count}
+    combined_average = number_of_games_coached.merge(games_won){|key, games_played, games_won| games_won.to_f / games_played.to_f}
+    coach_name = combined_average.key(combined_average.values.max)
   end
 
-  def fewest_tackles(season)
-    game_teams_by_team = game_teams_by_season(season).group_by{|game_team| game_team.team_id}
-    team_tackles_totals = game_teams_by_team.transform_values{|values| values.map{|game_team| game_team.tackles.to_i}.inject(:+)}
-    lowest_tackling_team_id = team_tackles_totals.index(team_tackles_totals.values.min)
-    lowest_tackling_team = @teams.find {|team| team.team_id == lowest_tackling_team_id}
-    lowest_tackling_team.team_name
+  def worst_coach(season)
+    games_played_in_season(season)
+    games_played_by_coach = games_played_in_season(season).group_by {|game| game.head_coach}
+    number_of_games_coached = games_played_by_coach.transform_values {|value| value.count}
+    games_won = games_played_by_coach.transform_values {|value| value.select {|game| game.result == "WIN"}}.transform_values {|value| value.count}
+    combined_average = number_of_games_coached.merge(games_won){|key, games_played, games_won| games_won.to_f / games_played.to_f}
+    coach_name = combined_average.key(combined_average.values.min)
+  end
+
 
   def most_accurate_team(season)
     games_by_season = @games.group_by {|game| game.season}
@@ -131,7 +135,7 @@ class League
     shots = games_in_question_array.map {|game| game.shots.to_f}
     ratios_array = goals.zip(shots).map {|thing| thing.inject(:/).round(2)}
     ratios_by_team = Hash[team_id_array.zip(ratios_array)]
-    max_ratio = ratios_by_team.index(ratios_by_team.values.max)
+    max_ratio = ratios_by_team.key(ratios_by_team.values.max)
     team_name_from_id(max_ratio)
   end
 
@@ -146,7 +150,7 @@ class League
     shots = games_in_question_array.map {|game| game.shots.to_f}
     ratios_array = goals.zip(shots).map {|thing| thing.inject(:/).round(2)}
     ratios_by_team = Hash[team_id_array.zip(ratios_array)]
-    min_ratio = ratios_by_team.index(ratios_by_team.values.min)
+    min_ratio = ratios_by_team.key(ratios_by_team.values.min)
     team_name_from_id(min_ratio)
   end
 
@@ -166,7 +170,13 @@ class League
 
   def most_tackles(season)
     team_tackles_totals = game_stats_by_team_id(season).transform_values{|values| values.map{|game_team| game_team.tackles.to_i}.inject(:+)}
-    team_id = team_tackles_totals.index(team_tackles_totals.values.max)
+    team_id = team_tackles_totals.key(team_tackles_totals.values.max)
+    team_name_from_id(team_id)
+  end
+
+  def fewest_tackles(season)
+    team_tackles_totals = game_stats_by_team_id(season).transform_values{|values| values.map{|game_team| game_team.tackles.to_i}.inject(:+)}
+    team_id = team_tackles_totals.key(team_tackles_totals.values.min)
     team_name_from_id(team_id)
   end
 end
