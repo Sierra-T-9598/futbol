@@ -1,4 +1,4 @@
-require "./lib/league.rb"
+require './lib/league.rb'
 require './lib/stat_tracker.rb'
 
 RSpec.describe League do
