@@ -1,8 +1,3 @@
-# module Averageable
-#   def average(amount,total)
-#     ((amount / total) * 100).ceil(2)
-#   end
-# end
 
 module Summable
   def sum_of_goals_each_game
