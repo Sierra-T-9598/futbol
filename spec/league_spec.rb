@@ -1,4 +1,4 @@
-require "./lib/league.rb"
+require './lib/league.rb'
 require './lib/stat_tracker.rb'
 
 RSpec.describe League do
@@ -174,5 +174,93 @@ RSpec.describe League do
   end
 end
 
+RSpec.describe League do
+  game_path = './data/games_dummy.csv'
+  team_path = './data/teams_dummy.csv'
+  game_teams_path = './data/game_teams_dummy.csv'
+  let(:games) {CSV.parse(File.read(game_path), headers: true).map {|row| Game.new(row)}}
+  let(:teams) {CSV.parse(File.read(team_path), headers: true).map {|row| Team.new(row)}}
+  let(:game_teams) {CSV.parse(File.read(game_teams_path), headers: true).map {|row| GameTeam.new(row)}}
+  let(:data) {{games: games, teams: teams, game_teams: game_teams}}
 
-#require "pry"; binding.pry
+  let(:league) {League.new(data)}
+
+  ### Unit Tests for Summable
+  it '#sum_of_goals_each_game' do
+    expect(league.sum_of_goals_each_game).to eq([5, 5, 1, 5, 4, 4, 3, 3, 2])
+  end
+
+  ### Unit Tests for Averageable
+  it '#average' do
+    expect(league.average(3, 4)).to eq(0.75)
+  end
+
+  ### Unit Tests for Hashable
+  it '#combined_home_and_away_team_goals' do
+    expect(league.combined_home_and_away_team_goals).to eq({"3"=>2, "6"=>10, "16"=>9, "17"=>6, "12"=>7, "14"=>7})
+  end
+
+  it '#averaging_hash' do
+    expect(league.averaging_hash).to eq({"3"=>0.5, "6"=>2.5, "16"=>2.25, "17"=>1.5, "12"=>2.33, "14"=>2.33})
+  end
+
+  it '#total_games' do
+    expect(league.total_games).to eq({"3"=>4, "6"=>4, "16"=>4, "17"=>4, "12"=>3, "14"=>3})
+  end
+
+  it '#games_played_in_season' do
+    expect(league.games_played_in_season("20122013")).to be_a(Array)
+  end
+
+  it '#game_stats_by_team_id' do
+    expect(league.game_stats_by_team_id("20122013")).to be_a(Hash)
+  end
+
+  it '#away_teams_goals_by_id' do
+    expect(league.away_teams_goals_by_id).to eq({"6"=>7, "3"=>1, "17"=>2, "16"=>5, "14"=>5, "12"=>2})
+  end
+
+  it '#away_team_goals_per_game_avg' do
+    expect(league.away_team_goals_per_game_avg).to eq({"6"=>3.5, "3"=>0.5, "17"=>1.0, "16"=>2.5, "14"=>2.5, "12"=>2.0})
+  end
+
+  it '#home_team_goals_by_id' do
+    expect(league.home_team_goals_by_id).to eq({"3"=>1, "6"=>3, "16"=>4, "17"=>4, "12"=>5, "14"=>2})
+  end
+
+  it '#home_team_goals_per_game_avg' do
+    expect(league.home_team_goals_per_game_avg).to eq({"3"=>0.5, "6"=>1.5, "16"=>2.0, "17"=>2.0, "12"=>2.5, "14"=>2.0})
+  end
+
+  it '#team_name_from_id' do
+    expect(league.team_name_from_id("6")).to eq("FC Dallas")
+  end
+
+  it '#combined_games_by_team_id' do
+    expect(league.combined_games_by_team_id).to be_a(Hash)
+  end
+
+  it '#combined_goals_by_team_id' do
+    expect(league.combined_goals_by_team_id).to eq({"3"=>2, "6"=>10, "16"=>9, "17"=>6, "12"=>7, "14"=>7})
+  end
+
+  it '#games_by_season' do
+    expect(league.games_by_season("20122013")).to be_a(Hash)
+  end
+
+  it '#game_teams_by_season' do
+    expect(league.game_teams_by_season("20122013")).to be_a(Array)
+  end
+
+  it '#season_from_game_id' do
+    expect(league.season_from_game_id("2012030221")).to be_a(Array)
+  end
+  ### Unit Tests for Fractionable
+  it '#worst_ratio_shots_to_goals' do
+    expect(league.worst_ratio_shots_to_goals("20122013")).to eq("2")
+  end
+
+  it '#best_ratio_shots_to_goals' do
+    expect(league.best_ratio_shots_to_goals("20122013")).to eq("17")
+  end
+end
