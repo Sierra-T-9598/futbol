@@ -1,5 +1,4 @@
 require 'csv'
-# require_relative 'pry'
 require_relative './game'
 require_relative './team'
 require_relative './game_team'
@@ -131,10 +130,10 @@ class StatTracker
   end
 
   def favorite_opponent(team)
-    @league.favorite_opponent(team)
+    @team_manager.favorite_opponent(team)
   end
 
   def rival(team)
-    @league.rival(team)
+    @team_manager.rival(team)
   end
 end

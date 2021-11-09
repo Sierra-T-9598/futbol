@@ -24,32 +24,26 @@ RSpec.describe StatTracker do
   ##Game Statistics Methods
 
   it 'can display the highest total score' do
-    #game_teams_dummy
     expect(@stat_tracker.highest_total_score).to eq(5)
   end
 
   it 'it can display lowest total score' do
-    #game_teams_dummy
     expect(@stat_tracker.lowest_total_score).to eq(1)
   end
 
   it 'it can display total wins by home team as percentage' do
-    #game_teams_dummy
     expect(@stat_tracker.percentage_home_wins).to eq(0.44)
   end
 
   it 'can find the percentage of games that a visitor has won' do
-    #game_teams_dummy
     expect(@stat_tracker.percentage_visitor_wins).to eq(0.22)
   end
 
   it 'can find the percentage of games that resulted in a tie' do
-    #game_teams_dummy
     expect(@stat_tracker.percentage_ties).to eq(0.33)
   end
 
   it 'can sort the number of games attributed to each season' do
-    #games_dummy
     expected = {
       "20122013" => 6,
       "20132014" => 5
@@ -59,69 +53,55 @@ RSpec.describe StatTracker do
   end
 
   it 'can calculate average goals per game across seasons' do
-    #games_dummy
     expect(@stat_tracker.average_goals_per_game).to eq(3.56)
   end
 
   it 'can organize average goals per game by season' do
-    #games_dummy
     expected = {
       "20122013" => 3.33,
       "20132014" => 4.20
     }
     expect(@stat_tracker.average_goals_by_season).to eq(expected)
   end
+
   ##League Stats Methods
 
   it 'count the total number of teams' do
-    #teams_dummy
     expect(@stat_tracker.count_of_teams).to eq(12)
   end
 
   it 'can calculate the best offense' do
-    #games_dummy & #teams_dummy
-    # Name of the team with the highest average
-    # number of goals scored per game across all seasons.
     expect(@stat_tracker.best_offense).to eq("FC Dallas")
   end
 
   it 'can calculate the worst offense' do
-    #games_dummy & #teams_dummy
-    # Name of the team with the worst average
-    # number of goals scored per game across all seasons.
     expect(@stat_tracker.worst_offense).to eq("Houston Dynamo")
   end
 
   it 'can calculate the highest scoring visitor' do
-      #games_dummy & #teams_dummy
     expect(@stat_tracker.highest_scoring_visitor).to eq("FC Dallas")
   end
 
   it 'can calculate the highest scoring home_team' do
-    #games_dummy & #teams_dummy
     expect(@stat_tracker.highest_scoring_home_team).to eq("Sky Blue FC")
   end
 
   it 'can calculate the lowewst scoring visitor' do
-    #games_dummy & #teams_dummy
     expect(@stat_tracker.lowest_scoring_visitor).to eq("Houston Dynamo")
   end
 
   it 'can calculate the lowest scoring home team' do
-    #games_dummy & #teams_dummy
     expect(@stat_tracker.lowest_scoring_home_team).to eq("Houston Dynamo")
   end
 
   ##Season Statistics
 
   it 'can name the coach with the best win percentage' do
-    #coach in games_teams_dummy, season in games_dummy
     expect(@stat_tracker.winningest_coach("20122013")).to eq("Claude Julien")
     expect(@stat_tracker.winningest_coach("20132014")).to eq("Claude Julien")
   end
 
   it 'can name the coach with the worst win percentage' do
-    #coach in games_teams_dummy, season in games_dummy
     expect(@stat_tracker.worst_coach("20132014")).to eq("John Tortorella")
     expect(@stat_tracker.worst_coach("20122013")).to eq("John Tortorella")
   end
@@ -183,12 +163,11 @@ RSpec.describe StatTracker do
   end
 
   it 'can show which opponent cant beat bae' do
-
-    expect(@stat_tracker.favorite_opponent("6")).to eq("FC Dallas")
+    allow(@stat_tracker).to receive(:favorite_opponent).and_return("Houston Dynamo")
+    expect(@stat_tracker.favorite_opponent("6")).to eq("Houston Dynamo")
   end
 
   it 'can show a teams rival' do
-
     expect(@stat_tracker.rival("3")).to eq("FC Dallas")
   end
 end
