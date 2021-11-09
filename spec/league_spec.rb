@@ -1,4 +1,4 @@
-require "./lib/league.rb"
+require './lib/league.rb'
 require './lib/stat_tracker.rb'
 
 RSpec.describe League do
@@ -250,5 +250,17 @@ RSpec.describe League do
 
   it '#game_teams_by_season' do
     expect(league.game_teams_by_season("20122013")).to be_a(Array)
+  end
+
+  it '#season_from_game_id' do
+    expect(league.season_from_game_id("2012030221")).to be_a(Array)
+  end
+  ### Unit Tests for Fractionable
+  it '#worst_ratio_shots_to_goals' do
+    expect(league.worst_ratio_shots_to_goals("20122013")).to eq("2")
+  end
+
+  it '#best_ratio_shots_to_goals' do
+    expect(league.best_ratio_shots_to_goals("20122013")).to eq("17")
   end
 end

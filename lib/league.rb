@@ -5,11 +5,13 @@ require_relative './stat_tracker.rb'
 require_relative './summable'
 require_relative './hashable'
 require_relative './averageable'
+require_relative './fractionable'
 
 class League
   include Summable
   include Hashable
   include Averageable
+  include Fractionable
   attr_reader :games,:teams,:game_teams
 
   def initialize(data)
@@ -125,37 +127,11 @@ class League
   end
 
   def most_accurate_team(season)
-    games_in_question_array = games_played_in_season(season)
-    games_in_question_hash = game_stats_by_team_id(season)
-    goals_by_team_array = games_in_question_hash.map {|key, game| game.map {|stat| stat.goals.to_f}}
-    total_goals = goals_by_team_array.map {|goal| goal.sum}
-    shots_by_team_array = games_in_question_hash.map {|key, game| game.map {|stat| stat.shots.to_f}}
-    total_shots = shots_by_team_array.map {|shot| shot.sum}
-
-    team_id_array = games_in_question_array.map {|game| game.team_id}.uniq
-
-    ratios_array = total_shots.zip(total_goals).map {|thing| thing.inject(:/)}
-    ratios_by_team = Hash[team_id_array.zip(ratios_array)]
-    min_ratio = ratios_by_team.key(ratios_by_team.values.min)
-    team_name_from_id(min_ratio)
+    team_name_from_id(best_ratio_shots_to_goals(season))
   end
 
   def least_accurate_team(season)
-
-    games_in_question_array = games_played_in_season(season)
-    games_in_question_hash = game_stats_by_team_id(season)
-    goals_by_team_array = games_in_question_hash.map {|key, game| game.map {|stat| stat.goals.to_f}}
-    total_goals = goals_by_team_array.map {|goal| goal.sum}
-    shots_by_team_array = games_in_question_hash.map {|key, game| game.map {|stat| stat.shots.to_f}}
-    total_shots = shots_by_team_array.map {|shot| shot.sum}
-
-    team_id_array = games_in_question_array.map {|game| game.team_id}.uniq
-
-    ratios_array = total_goals.zip(total_shots).map {|thing| thing.inject(:/)}
-    ratios_by_team = Hash[team_id_array.zip(ratios_array)]
-    min_ratio = ratios_by_team.key(ratios_by_team.values.min)
-    team_name_from_id(min_ratio)
-    # require "pry"; binding.pry
+    team_name_from_id(worst_ratio_shots_to_goals(season))
   end
 
   def most_tackles(season)
@@ -169,19 +145,9 @@ class League
     team_id = team_tackles_totals.index(team_tackles_totals.values.min)
     team_name_from_id(team_id)
   end
-  
-   def team_info(team_id)
-    team_keys = ["team_id", "franchise_id", "team_name", "abbreviation", "link"]
-    team_values = []
-    teams_by_team_id = @teams.group_by {|team| team.team_id}
-    team_in_question = teams_by_team_id.keep_if {|key, value| key == team_id}
-    team_values << team_in_question.map {|key, team| team.map {|team| team.team_id}}.flatten
-    team_values << team_in_question.map {|key, team| team.map {|team| team.franchise_id}}.flatten
-    team_values << team_in_question.map {|key, team| team.map {|team| team.team_name}}.flatten
-    team_values << team_in_question.map {|key, team| team.map {|team| team.abbreviation}}.flatten
-    team_values << team_in_question.map {|key, team| team.map {|team| team.link}}.flatten
-    team_values_array = team_values.flatten
-    team_info_hash = Hash[team_keys.zip(team_values_array)]
+
+  def team_info(team_id)
+    generate_team_info_hash(team_id)
   end
 
   def best_season(team)
@@ -201,13 +167,13 @@ class League
     sorted_by_season = losing_season_arrays.group_by{|season| season}
     sorted_by_season.values.min_by{|array| array.length}[0]
   end
-  
+
   def average_win_percentage(team)
     total_games = @game_teams.select {|game_team| game_team.team_id == team}
     total_wins = total_games.select {|game| game.result["WIN"]}
     average(total_wins.count, total_games.count)
   end
-    
+
   def most_goals_scored(team)
     team_games = @game_teams.select{|game_team| game_team.team_id == team}
     goals = team_games.map{|game_team| game_team.goals.to_i}
