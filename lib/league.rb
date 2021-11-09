@@ -190,38 +190,37 @@ class League
     games_by_game_id = @games.select do |game|
       if game.home_team_id == team || game.away_team_id == team
        game.game_id
-       end
-     end
-     games_vs_opponent = games_by_game_id.map {|game_id| @game_teams.select {|game| game.game_id == game_id.game_id}}
-     total_games_lost = games_vs_opponent.flatten.keep_if {|game| game.result == "WIN" || game.result == "TIE" && game.team_id != team}
-     total_losses_by_name = total_games_lost.map {|game| team_name_from_id(game.team_id)}
-     grouped_losses = total_losses_by_name.group_by{ |x| x }.values
-     grouped_losses.min_by{|array| array.length}[0]
-     #sorted_by_season.values.max_by{|array| array.length}[0]
-     # team_id = total_losses_by_id.key(total_losses_by_id.values.max)
-     # team_name_from_id(team_id)
+      end
+    end
+    games_vs_opponent = games_by_game_id.map {|game_id| @game_teams.select {|game| game.game_id == game_id.game_id}}
+    all_games_played_against_team = games_vs_opponent.flatten.keep_if {|game| game.team_id != team}
+    total_games_played_by_id = all_games_played_against_team.group_by {|game| game.team_id}.transform_values! {|value| value.count}
+    total_games_won_by_opponent = games_vs_opponent.flatten.keep_if {|game| game.result == "WIN" || game.result == "TIE" && game.team_id != team}.group_by {|game| game.team_id}.transform_values! {|value| value.count}
+    win_percent = total_games_won_by_opponent.merge(total_games_played_by_id){|key, total_winss,total_games| total_winss.to_f / total_games.to_f}
+    win_percent.transform_values! do |value|
+      if value.class == Float
+        value *100
+      end
+    end
+    team_name_from_id(win_percent.compact.min_by{|key, value| value}[0])
   end
 
   def rival(team)
     games_by_game_id = @games.select do |game|
       if game.home_team_id == team || game.away_team_id == team
        game.game_id
-       end
-     end
-     games_vs_opponent = games_by_game_id.map {|game_id| @game_teams.select {|game| game.game_id == game_id.game_id}}
-
-     total_games_won = games_vs_opponent.flatten.keep_if {|game| game.result == "WIN" && game.team_id != team}
-     total_games_played = games_vs_opponent.flatten.keep_if {|game| game.result == "WIN" || game.result == "LOSS" && game.team_id != team}
-
-     total_wins_by_name = total_games_won.map {|game| team_name_from_id(game.team_id)}
-     total_games_played_by_name = total_games_played.map {|game| team_name_from_id(game.team_id)}
-
-     grouped_wins = total_wins_by_name.group_by{ |x| x }.values
-     grouped_games = total_games_played_by_name.group_by{ |x| x }.values
-     require "pry"; binding.pry
-
-     #grouped_.max_by{|array| array.length}[0]
-     # team_id = total_losses_by_id.key(total_losses_by_id.values.max)
-     # team_name_from_id(team_id)
-   end
+      end
+    end
+    games_vs_opponent = games_by_game_id.map {|game_id| @game_teams.select {|game| game.game_id == game_id.game_id}}
+    all_games_played_against_team = games_vs_opponent.flatten.keep_if {|game| game.team_id != team}
+    total_games_played_by_id = all_games_played_against_team.group_by {|game| game.team_id}.transform_values! {|value| value.count}
+    total_games_won_by_opponent = games_vs_opponent.flatten.keep_if {|game| game.result == "WIN" && game.result != "TIE" && game.team_id != team}.group_by {|game| game.team_id}.transform_values! {|value| value.count}
+    win_percent = total_games_won_by_opponent.merge(total_games_played_by_id){|key, total_winss,total_games| total_winss.to_f / total_games.to_f}
+    win_percent.transform_values! do |value|
+      if value.class == Float
+        value *100
+      end
+    end
+    team_name_from_id(win_percent.compact.max_by{|key, value| value}[0])
+  end
 end
