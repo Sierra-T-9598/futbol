@@ -140,33 +140,33 @@ RSpec.describe League do
 
 
 ###TEAM STATS METHODS
-  it 'can provide team info' do
-    expected = {"team_id" => "1", "franchise_id" => "23", "team_name" => "Atlanta United", "abbreviation" => "ATL", "link" => "/api/v1/teams/1"}
-    expect(league.team_info("1")).to eq(expected)
-  end
-
-  it 'can calculate the team with the best season' do
-    expect(league.best_season("17")).to eq("20122013")
-  end
-
-  xit 'can calculate the team with the worst season' do
-    expect(league.worst_season("3")).to eq("20122013")
-  end
-
-  it 'can calculate the average win percentage' do
-    expect(league.average_win_percentage("6")).to eq(0.75)
-  end
-
-  it 'can report most goals scored' do
-    expect(league.most_goals_scored("6")).to eq(3)
-  end
-
-  it 'can report fewest goals scored' do
-    expect(league.fewest_goals_scored("19")).to eq(0)
-  end
+  # it 'can provide team info' do
+  #   expected = {"team_id" => "1", "franchise_id" => "23", "team_name" => "Atlanta United", "abbreviation" => "ATL", "link" => "/api/v1/teams/1"}
+  #   expect(league.team_info("1")).to eq(expected)
+  # end
+  #
+  # it 'can calculate the team with the best season' do
+  #   expect(league.best_season("17")).to eq("20122013")
+  # end
+  #
+  # it 'can calculate the team with the worst season' do
+  #   expect(league.worst_season("3")).to eq("20122013")
+  # end
+  #
+  # it 'can calculate the average win percentage' do
+  #   expect(league.average_win_percentage("6")).to eq(0.75)
+  # end
+  #
+  # it 'can report most goals scored' do
+  #   expect(league.most_goals_scored("6")).to eq(3)
+  # end
+  #
+  # it 'can report fewest goals scored' do
+  #   expect(league.fewest_goals_scored("19")).to eq(0)
+  # end
 
   it 'can show which opponent cant beat bae' do
-    expect(league.favorite_opponent("6")).to eq("Houston Dynamo")
+    expect(league.favorite_opponent("6")).to eq("FC Dallas")
   end
 
   it 'can show a teams rival' do
@@ -174,6 +174,7 @@ RSpec.describe League do
   end
 end
 
+###MODULES
 RSpec.describe League do
   game_path = './data/games_dummy.csv'
   team_path = './data/teams_dummy.csv'
