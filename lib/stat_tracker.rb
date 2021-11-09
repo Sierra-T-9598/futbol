@@ -4,6 +4,7 @@ require_relative './game'
 require_relative './team'
 require_relative './game_team'
 require_relative './league'
+require_relative './team_manager'
 
 
 class StatTracker
@@ -13,7 +14,7 @@ class StatTracker
     games = CSV.parse(File.read(locations[:games]), headers: true).map {|row| Game.new(row)}
     teams = CSV.parse(File.read(locations[:teams]), headers: true).map {|row| Team.new(row)}
     game_teams = CSV.parse(File.read(locations[:game_teams]), headers: true).map {|row| GameTeam.new(row)}
-
+    @team_manager = TeamManager.new({games: games, teams: teams, game_teams: game_teams})
     @league = League.new({games: games, teams: teams, game_teams: game_teams})
   end
 
@@ -106,27 +107,27 @@ class StatTracker
   end
 
   def team_info(team_id)
-    @league.team_info(team_id)
+    @team_manager.team_info(team_id)
   end
 
   def average_win_percentage(team)
-    @league.average_win_percentage(team)
-  end 
+    @team_manager.average_win_percentage(team)
+  end
 
   def most_goals_scored(team)
-    @league.most_goals_scored(team)
+    @team_manager.most_goals_scored(team)
   end
 
   def fewest_goals_scored(team)
-    @league.fewest_goals_scored(team)
+    @team_manager.fewest_goals_scored(team)
   end
 
   def best_season(team)
-    @league.best_season(team)
+    @team_manager.best_season(team)
   end
 
   def worst_season(team)
-    @league.worst_season(team)
+    @team_manager.worst_season(team)
   end
 
   def favorite_opponent(team)
@@ -135,5 +136,5 @@ class StatTracker
 
   def rival(team)
     @league.rival(team)
-  end 
+  end
 end

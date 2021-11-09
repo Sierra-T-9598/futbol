@@ -159,12 +159,12 @@ RSpec.describe StatTracker do
     expect(@stat_tracker.team_info("1")).to eq(expected)
   end
 
-  it 'can calculate the team with the best season' do
+  it 'can calculate the best season for a team' do
     expect(@stat_tracker.best_season("6")).to eq("20122013")
   end
 
-  it 'can calculate the team with the worst season' do
-    expect(@stat_tracker.worst_season("3")).to eq("20122013")
+  it 'can calculate the worst season for a team' do
+    expect(@stat_tracker.worst_season("17")).to eq("20122013")
   end
 
   it 'can calcuate the average win percentage' do
@@ -182,12 +182,12 @@ RSpec.describe StatTracker do
     expect(@stat_tracker.fewest_goals_scored("19")). to eq(0)
   end
 
-  xit 'can show which opponent cant beat bae' do
+  it 'can show which opponent cant beat bae' do
 
-    expect(@stat_tracker.favorite_opponent("6")).to eq("Houstoun Dynamo")
+    expect(@stat_tracker.favorite_opponent("6")).to eq("FC Dallas")
   end
 
-  xit 'can show a teams rival' do
+  it 'can show a teams rival' do
 
     expect(@stat_tracker.rival("3")).to eq("FC Dallas")
   end
