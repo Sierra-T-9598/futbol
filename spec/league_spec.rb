@@ -149,7 +149,7 @@ RSpec.describe League do
     expect(league.best_season("17")).to eq("20122013")
   end
 
-  it 'can calculate the team with the worst season' do
+  xit 'can calculate the team with the worst season' do
     expect(league.worst_season("3")).to eq("20122013")
   end
 
@@ -165,11 +165,11 @@ RSpec.describe League do
     expect(league.fewest_goals_scored("19")).to eq(0)
   end
 
-  xit 'can show which opponent cant beat bae' do
+  it 'can show which opponent cant beat bae' do
     expect(league.favorite_opponent("6")).to eq("Houston Dynamo")
   end
 
-  xit 'can show a teams rival' do
+  it 'can show a teams rival' do
     expect(league.rival("3")).to eq("FC Dallas")
   end
 end

@@ -124,4 +124,12 @@ class StatTracker
   def worst_season(team)
     @league.worst_season(team)
   end
+
+  def favorite_opponent(team)
+    @league.favorite_opponent(team)
+  end
+
+  def rival(team)
+    @league.rival(team)
+  end 
 end
