@@ -10,9 +10,7 @@ class League
   include Summable
   include Hashable
   include Averageable
-  attr_reader :games,
-              :teams,
-              :game_teams
+  attr_reader :games,:teams,:game_teams
 
   def initialize(data)
     @games = data[:games]
@@ -143,6 +141,7 @@ class League
   end
 
   def least_accurate_team(season)
+
     games_in_question_array = games_played_in_season(season)
     games_in_question_hash = game_stats_by_team_id(season)
     goals_by_team_array = games_in_question_hash.map {|key, game| game.map {|stat| stat.goals.to_f}}

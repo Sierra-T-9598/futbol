@@ -12,7 +12,7 @@ module Hashable
   end
 
   def averaging_hash
-    combined_home_and_away_team_goals.merge(total_games){|key, goals, games| goals.to_f / games.to_f}
+    combined_home_and_away_team_goals.merge(total_games){|key, goals, games| (goals.to_f / games.to_f).round(2)}
   end
 
   def total_games

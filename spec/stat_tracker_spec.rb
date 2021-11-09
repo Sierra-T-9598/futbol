@@ -17,8 +17,6 @@ RSpec.describe StatTracker do
     @stat_tracker = StatTracker.from_csv(locations)
   end
 
-
-
   it 'exists' do
     expect(@stat_tracker).to be_instance_of(StatTracker)
   end
