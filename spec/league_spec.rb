@@ -255,4 +255,12 @@ RSpec.describe League do
   it '#season_from_game_id' do
     expect(league.season_from_game_id("2012030221")).to be_a(Array)
   end
+  ### Unit Tests for Fractionable
+  it '#worst_ratio_shots_to_goals' do
+    expect(league.worst_ratio_shots_to_goals("20122013")).to eq("2")
+  end
+
+  it '#best_ratio_shots_to_goals' do
+    expect(league.best_ratio_shots_to_goals("20122013")).to eq("17")
+  end
 end
