@@ -61,4 +61,41 @@ class TeamManager
       goals.min
     end
 
-end
+    def favorite_opponent(team)
+      games_by_game_id = @games.select do |game|
+        if game.home_team_id == team || game.away_team_id == team
+         game.game_id
+        end
+      end
+      games_vs_opponent = games_by_game_id.map {|game_id| @game_teams.select {|game| game.game_id == game_id.game_id}}
+      all_games_played_against_team = games_vs_opponent.flatten.keep_if {|game| game.team_id != team}
+      total_games_played_by_id = all_games_played_against_team.group_by {|game| game.team_id}.transform_values! {|value| value.count}
+      total_games_won_by_opponent = games_vs_opponent.flatten.keep_if {|game| game.result == "WIN" || game.result == "TIE" && game.team_id != team}.group_by {|game| game.team_id}.transform_values! {|value| value.count}
+      win_percent = total_games_won_by_opponent.merge(total_games_played_by_id){|key, total_winss,total_games| total_winss.to_f / total_games.to_f}
+      win_percent.transform_values! do |value|
+        if value.class == Float
+          value *100
+        end
+      end
+      team_name_from_id(win_percent.compact.min_by{|key, value| value}[0])
+    end
+
+    def rival(team)
+      games_by_game_id = @games.select do |game|
+        if game.home_team_id == team || game.away_team_id == team
+         game.game_id
+        end
+      end
+      games_vs_opponent = games_by_game_id.map {|game_id| @game_teams.select {|game| game.game_id == game_id.game_id}}
+      all_games_played_against_team = games_vs_opponent.flatten.keep_if {|game| game.team_id != team}
+      total_games_played_by_id = all_games_played_against_team.group_by {|game| game.team_id}.transform_values! {|value| value.count}
+      total_games_won_by_opponent = games_vs_opponent.flatten.keep_if {|game| game.result == "WIN" && game.result != "TIE" && game.team_id != team}.group_by {|game| game.team_id}.transform_values! {|value| value.count}
+      win_percent = total_games_won_by_opponent.merge(total_games_played_by_id){|key, total_winss,total_games| total_winss.to_f / total_games.to_f}
+      win_percent.transform_values! do |value|
+        if value.class == Float
+          value *100
+        end
+      end
+      team_name_from_id(win_percent.compact.max_by{|key, value| value}[0])
+    end
+  end

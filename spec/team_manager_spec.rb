@@ -36,4 +36,13 @@ RSpec.describe TeamManager do
   it 'can report fewest goals scored' do
     expect(team_manager.fewest_goals_scored("19")).to eq(0)
   end
+
+  it 'can show which opponent cant beat bae' do
+    allow(team_manager).to receive(:favorite_opponent).and_return("Houston Dynamo")
+    expect(team_manager.favorite_opponent("6")).to eq("Houston Dynamo")
+  end
+
+  it 'can show a teams rival' do
+    expect(team_manager.rival("3")).to eq("FC Dallas")
+  end
 end
