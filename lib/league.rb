@@ -146,18 +146,8 @@ class League
     team_name_from_id(team_id)
   end
 
-   def team_info(team_id)
-    team_keys = ["team_id", "franchise_id", "team_name", "abbreviation", "link"]
-    team_values = []
-    teams_by_team_id = @teams.group_by {|team| team.team_id}
-    team_in_question = teams_by_team_id.keep_if {|key, value| key == team_id}
-    team_values << team_in_question.map {|key, team| team.map {|team| team.team_id}}.flatten
-    team_values << team_in_question.map {|key, team| team.map {|team| team.franchise_id}}.flatten
-    team_values << team_in_question.map {|key, team| team.map {|team| team.team_name}}.flatten
-    team_values << team_in_question.map {|key, team| team.map {|team| team.abbreviation}}.flatten
-    team_values << team_in_question.map {|key, team| team.map {|team| team.link}}.flatten
-    team_values_array = team_values.flatten
-    team_info_hash = Hash[team_keys.zip(team_values_array)]
+  def team_info(team_id)
+    generate_team_info_hash(team_id)
   end
 
   def best_season(team)
